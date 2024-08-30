@@ -1,20 +1,18 @@
-name: exercício
+name: Workflow GO - SH
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
   workflow_dispatch:
 
 jobs:
-  upload-job-linux:
+  uploadLinux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Checando sistema operacional linux
-        run: cat /etc/os-release
+      # - uses: actions/checkout@v4
+      # - name: Checando sistema operacional linux
+      #   run: cat /etc/os-release
 
       - name: Upload artefato no linux
         uses: actions/upload-artifact@v4
@@ -22,12 +20,12 @@ jobs:
           name: linux
           path: ./${{ env.FILE_NAME }}
 
-  upload-job-windows:
+  uploadWindows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Checando sistema operacional windows
-        run: Get-CimInstance Win32_OperatingSystem
+      # - uses: actions/checkout@v4
+      # - name: Checando sistema operacional windows
+      #   run: Get-CimInstance Win32_OperatingSystem
 
       - name: Upload artefato no windows
         uses: actions/upload-artifact@v4
