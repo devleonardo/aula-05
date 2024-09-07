@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 func main(){
-	http.HandleFunc("/", HellorServer)
+	http.HandleFunc("/", HelloServer)
 	http.ListenAndServe(":13000", nil)
 }
 func HelloServer (w http.ResponseWriter, r *http.Request) {
