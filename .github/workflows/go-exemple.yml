@@ -1,8 +1,13 @@
 name: Workflow GO - SH
 
-on: push
-  # push:
-  #   branches: [ "main" ]
+on:
+  schedule:
+    - cron: "*/15 0-23 * * 1-6"
+  push:
+    branches: [ "main" ]
+
+env:
+  FILE_NAME: hello-server
 
 jobs:
   uploadLinux:
@@ -27,6 +32,35 @@ jobs:
 
       - name: Upload artefato no windows
         uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: ./${{ env.FILE_NAME }}.exe
+
+  download-and-run-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checando sistema operacional linux
+        run: cat /etc/*release
+
+      - name: Download de artefato no linux
+        uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: ./${{ env.FILE_NAME }}
+
+      - name: Ler opções do script run.sh
+        run: source ./run.sh
+
+  download-only-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checando sistema operacional windows
+        run: Get-CimInstance Win32_OperatingSystem
+
+      - name: Download artefato no windows
+        uses: actions/download-artifact@v4
         with:
           name: windows
           path: ./${{ env.FILE_NAME }}.exe
